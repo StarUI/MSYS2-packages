@@ -1,0 +1,30 @@
+From 780fe2615c674a6516f2a88cb8d56cdc52f16910 Mon Sep 17 00:00:00 2001
+From: Christoph Reiter <reiter.christoph@gmail.com>
+Date: Fri, 21 May 2021 23:00:14 +0200
+Subject: [PATCH 13/N] Fix asciidoc argparse
+
+a2x seems to fail when a value to an argument looks like an argument itself.
+The best fix seems to be to attach the value to the argument using an equal
+sign.
+
+https://bugs.python.org/issue9334
+---
+ doc/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/doc/meson.build b/doc/meson.build
+index 4aaac55..157ee4d 100644
+--- a/doc/meson.build
++++ b/doc/meson.build
+@@ -56,7 +56,7 @@ foreach page : manpages
+       '-f', 'manpage',
+       '--xsltproc-opts', '-param man.endnotes.list.enabled 0 -param man.endnotes.are.numbered 0',
+       '-D', '@OUTDIR@',
+-      '--asciidoc-opts', ' '.join(asciidoc_opts),
++      '--asciidoc-opts=' + ' '.join(asciidoc_opts),
+       '@INPUT@',
+     ],
+     input : input,
+-- 
+2.31.1
+

@@ -3,7 +3,7 @@
 pkgname=elinks-git
 _ver_base=0.13
 pkgver=0.13.4008.f86be659
-pkgrel=7
+pkgrel=8
 epoch=
 pkgdesc="Full-Featured Text WWW Browser (net-utils)"
 arch=("i686" "x86_64")
@@ -56,7 +56,8 @@ makedepends=('git'
              'zlib-devel')
 provides=("elinks")
 conflicts=("elinks")
-source=("${pkgname}"::"git+git://repo.or.cz/elinks.git"
+_commit="f86be659718c0cd0a67f88b42f07044c23d0d028"
+source=("${pkgname}"::"git+git://repo.or.cz/elinks.git#commit=${_commit}"
         "msys-platform.patch"
         "cygwin-deprecates.patch")
 sha256sums=('SKIP'
@@ -65,7 +66,7 @@ sha256sums=('SKIP'
 
 pkgver() {
   cd ${srcdir}/${pkgname}
-  printf "%s.%s.%s" "$_ver_base" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "%s.%s.%s" "$_ver_base" "$(git rev-list --count "${_commit}")" "$(git rev-parse --short "${_commit}")"
 }
 
 prepare() {

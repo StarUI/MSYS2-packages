@@ -2,7 +2,7 @@
 
 _realname=Alien-Build
 pkgname=perl-${_realname}
-pkgver=2.38
+pkgver=2.41
 pkgrel=1
 pkgdesc="Build external dependencies for use in CPAN"
 arch=('any')
@@ -17,7 +17,7 @@ options=(!emptydirs)
 source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/${_realname}-${pkgver}.tar.gz"
         01-msysize.patch)
 options=(!emptydirs)
-sha256sums=('6bbd4116d1a08f95df669fcba16acd6a7e94329843abc8cb7c4b038d1778bded'
+sha256sums=('aaa738117131b016f17f103b167deae2588f03bb72aa3fe15cbb1bad344cf2a4'
             '483769e64ca04e7005fb743e3500561ab8fd49ca9ee239fd5dd96045dc9677a2')
 
 prepare() {

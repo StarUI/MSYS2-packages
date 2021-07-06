@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.2.0
-pkgrel=3
+pkgrel=14
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('i686' 'x86_64')
 url="https://www.cygwin.com/"
@@ -52,7 +52,22 @@ source=('msys2-runtime'::git://sourceware.org/git/newlib-cygwin.git#tag=cygwin-$
         0027-Expose-full-command-lines-to-other-Win32-processes-b.patch
         0028-Disable-the-cygwin-GitHub-workflow.patch
         0029-Do-not-show-Error-dialogs-by-default.patch
-        0030-uname-limit-sysname-to-MSYS-or-MINGW.patch)
+        0030-uname-limit-sysname-to-MSYS-or-MINGW.patch
+        0031-CI-give-the-cygwin-sync-job-explicit-write-permissio.patch
+        0032-Cygwin-path_conv-Try-to-handle-native-symlinks-more-.patch
+        0033-Cygwin-console-Fix-race-issue-regarding-cons_master_.patch
+        0034-Revert-Cygwin-path_conv-Try-to-handle-native-symlink.patch
+        0035-Reapply-Cygwin-path_conv-Try-to-handle-native-symlin.patch
+        0036-Cygwin-Handle-virtual-drives-as-non-symlinks.patch
+        0037-Cygwin-suppress-FAST_CWD-warnings-on-ARM64.patch
+        0038-Cygwin-Add-missing-IsWow64Process2-declaration.patch
+        0039-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch
+        0040-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch
+        0041-kill-kill-Win32-processes-more-gently.patch
+        0042-Fix-64-vs-32-bit-type-confusion-in-swprintf.patch
+        0043-Don-t-fall-back-to-ExitProcess-if-process-handled-Ct.patch
+        0044-getprocaddr-refactor-cleanup.patch
+        0045-use-IsWow64Process2-to-detect-arm-cases.patch)
 sha256sums=('SKIP'
             '605f3f31dcca983fad2659f2d8f3531217e3f133757b40b0977e6a17c406c147'
             '5d120d24ce55ef08bf459781610e32c4a8e5e0eac73971a60e80590c6432d940'
@@ -83,7 +98,22 @@ sha256sums=('SKIP'
             '6a2dffa890ea1694a76333388bfcdb5bcc67d3a431e70064342002662909d366'
             'd18402a2c75e099a9cafd0ce7eba01476728c825812d4516ebc240e3c494fe4e'
             '969ace2675ebec747d0ccfe2540210ebac9974973b8b93325aecb53351514b76'
-            '301422428472f693ad3a659b1279c969d5457eaab77be4dc0a389b2f5c5b6a55')
+            '301422428472f693ad3a659b1279c969d5457eaab77be4dc0a389b2f5c5b6a55'
+            'acbf8e7fea8089d474a63d8e12fd68e13f33967911eb785895183619c4307092'
+            'ab78d325691fa6af631a73c3292537263b58a53eb0ab35c65d431a8536e8e12c'
+            '679c11a3c6f96aa99c7d6bf6529d7cd22fbb23b24a06196ab06a9dfec82355fe'
+            '109e3b9fedfa8809e67fdd43cf73d55568016409654e51386073c5542dded8a0'
+            'a5110bbaa001eac34af2f524badc818cb373d266ecd05001788cadca069ca5a3'
+            '665103d7d6313327126f73fec6abd63573b534a36068c383e030e579e5c6fdef'
+            '82de99d61139f19929ed2c4faf8da3d84767dc5d8f609a00f9bd8dea3c594e7d'
+            '82385daeed795666cf9e2e26a97e13417b714eba1011765285866f5467a4f0cf'
+            '8475880df4ae8f109ed006c81177d50da5c5067bb63cb2dd7c2718993dd6b74d'
+            '460adc6de940e25332efec7a6615bb95088ae0652870a1c0b4f37c72671444fe'
+            'cc0bfded281675af09ce94d847e814f77fd5cbcd86b09b7436a0e91b7697b8f4'
+            '04ee4b9ca58bfa8a3c0370d1cecadf50c9c02daf6a4e5ccd4610336155538b71'
+            '34f9a822fd2cbfd3a556f30ccea6f1dd6bb66b9edf0cd506c0cbb69b6ae437d7'
+            '54dd5a62e0b9491ed3d1e2ac934297864001c0d6751723342c92a332f105d603'
+            '526a6466d84e6aa83e0efccded72caaea398f9f2388f6752abaadc011635aa00')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -150,7 +180,22 @@ prepare() {
   0027-Expose-full-command-lines-to-other-Win32-processes-b.patch \
   0028-Disable-the-cygwin-GitHub-workflow.patch \
   0029-Do-not-show-Error-dialogs-by-default.patch \
-  0030-uname-limit-sysname-to-MSYS-or-MINGW.patch
+  0030-uname-limit-sysname-to-MSYS-or-MINGW.patch \
+  0031-CI-give-the-cygwin-sync-job-explicit-write-permissio.patch \
+  0032-Cygwin-path_conv-Try-to-handle-native-symlinks-more-.patch \
+  0033-Cygwin-console-Fix-race-issue-regarding-cons_master_.patch \
+  0034-Revert-Cygwin-path_conv-Try-to-handle-native-symlink.patch \
+  0035-Reapply-Cygwin-path_conv-Try-to-handle-native-symlin.patch \
+  0036-Cygwin-Handle-virtual-drives-as-non-symlinks.patch \
+  0037-Cygwin-suppress-FAST_CWD-warnings-on-ARM64.patch \
+  0038-Cygwin-Add-missing-IsWow64Process2-declaration.patch \
+  0039-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch \
+  0040-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch \
+  0041-kill-kill-Win32-processes-more-gently.patch \
+  0042-Fix-64-vs-32-bit-type-confusion-in-swprintf.patch \
+  0043-Don-t-fall-back-to-ExitProcess-if-process-handled-Ct.patch \
+  0044-getprocaddr-refactor-cleanup.patch \
+  0045-use-IsWow64Process2-to-detect-arm-cases.patch
 }
 
 build() {
@@ -195,6 +240,7 @@ package_msys2-runtime() {
 
   mkdir -p "${pkgdir}"/usr
   cp -rf "${srcdir}"/dest/usr/bin "${pkgdir}"/usr/
+  cp -rf "${srcdir}"/dest/usr/libexec "${pkgdir}"/usr/
   rm -f "${pkgdir}"/usr/bin/msys-2.0.dbg
   rm -f "${pkgdir}"/usr/bin/cyglsa-config
   rm -f "${pkgdir}"/usr/bin/cyglsa.dll

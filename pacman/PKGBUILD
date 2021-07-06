@@ -3,8 +3,8 @@
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
 pkgname=pacman
-pkgver=5.2.2
-pkgrel=19
+pkgver=6.0.0
+pkgrel=5
 pkgdesc="A library-based package manager with dependency support (MSYS2 port)"
 arch=('i686' 'x86_64')
 url="https://www.archlinux.org/pacman/"
@@ -36,75 +36,94 @@ makedepends=('asciidoc'
 backup=("etc/pacman.conf"
         "etc/makepkg.conf"
         "etc/makepkg_mingw.conf")
-source=(https://sources.archlinux.org/other/pacman/${pkgname}-${pkgver}.tar.gz
+_commit="542910d684191eb7f25ddc5d3d8fe3060028a267"
+source=(pacman-${pkgver}::git+https://gitlab.archlinux.org/pacman/pacman.git#commit=${_commit}
         "pacman.conf"
         "makepkg.conf"
         "makepkg_mingw.conf"
         "makepkg-mingw"
-        "0000-pacman-msysize.patch"
-        "0001-more-debugging-info.patch"
-        "0002-pacman-core-update.patch"
-        "0003-remove-ldconfig.patch"
-        "0004-change-epoch-sep.patch"
-        "0006-makepkg-avoid-creating-.tar-files-with-extended-attr.patch"
-        "0007-exe-interp-ignore-file-conflict.patch"
-        "0008-answer-yes-by-default.patch"
-        "0009-msys-use-pipe-instead-socket.patch"
-        "0010-filelist-strcasecmp.patch"
-        "0011-update-ja-po-for-msys2.patch"
-        "0012-workaround-bsdtar-AD-account.patch"
-        "0013-use-libintl.patch"
-        "0014-fix-asciidoc-argparse.patch"
-        "0016-excise-fakeroot.patch"
-        "0017-excise-sudo.patch"
-        "0018-use-msys-tools.patch"
-        "0019-doxyfile-in-missing.patch")
+        "fix-sig-download-name.patch"
+        0001-Msysize.patch
+        0002-More-debugging-info.patch
+        0003-Core-update.patch
+        0004-Remove-ldconfig.patch
+        0005-Change-the-epoch-separator.patch
+        0006-makepkg-avoid-creating-.tar-files-with-extended-attr.patch
+        0007-pacman-libalpm-ignore-file-conflicts-for-foo.exe-foo.patch
+        0008-Change-default-answer-of-all-queries-to-yes.patch
+        0009-Use-pipe-instead-of-socket.patch
+        0010-pacman-make-file-list-comparisons-between-packages-c.patch
+        0011-Translate-MSYS2-specific-messages-into-Japanese.patch
+        0012-Workaround-compressing-packages-with-bsdtar-under-Ac.patch
+        0013-Fix-asciidoc-argparse.patch
+        0014-Remove-fakeroot.patch
+        0015-Remove-sudo.patch
+        0016-Use-msys-tools.patch
+        0017-Export-CC-and-CXX-variables-explicitly.patch
+        0018-Add-a-CI-job.patch)
 validpgpkeys=('6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD'  # Allan McRae <allan@archlinux.org>
               'B8151B117037781095514CA7BBDFFC92306B1121') # Andrew Gregory (pacman) <andrew@archlinux.org>
-sha256sums=('bb201a9f2fb53c28d011f661d50028efce6eef2c1d2a36728bdd0130189349a0'
-            '11aa1895cda0522672a23879ceaa63054c2865bf775ee3b20f582bfa51ce1437'
-            '822af13248f04690377cd193370f33ac2f00a41234ead9cf3b7e5d5aba8bd0c5'
-            '36893d55ef55fd3f8656628ae323329ec9f77c796c937e547ac90a66758df352'
+sha256sums=('SKIP'
+            'fff047d9514c4810eee9ab798b51d3300cbf7ee1b5e2e494e1350499d28dd448'
+            'ee9f8a5ec60a1334725adb102f531f38badfe1bb66bde82c4aeb3131a2becc2f'
+            '49452621003656e5ad09c5ed38d37f62187ede8b6456a2ba2919846b430dfb74'
             '2bd27c3fc5443b367e5025c9b9a35670b02202e48e92eead90755fef8d08fa83'
-            '2e2dde573b971011abad5340cb2cd5a4b9a0e8470a2ed94d7a969525e0bed0c1'
-            '24ea2c8dca37847e04894ebfd05d1cf5df49dc0c8089f5581c99caa19b77a7ef'
-            'abb81e2dc9507dc20dc860287b8ce1bf5e5cd7cec3dd386770dc568c39db6431'
-            'fa6056f2d998578f8e11a97adf4d8a7bb4bba6f75b65aa498c82198ed9da9841'
-            'b672f3648bbfd7763b1e689c73a9ba7ddc230016a0d8dfeebca1b7faf7777424'
-            'e2731c4007a7c78848679e2203c35d1e56d3ef15a7586aeac9cc9e6e97824cfb'
-            '52343bbf99da6408950e34dd84319e34724040f866c497c25e36b4ee54030e82'
-            'e4f6e17af19e17e745a9f1c6b8402f5896229062c82167cb61f8e7d29eda716c'
-            '9e8fe5ee78192b0407e80ad2e52cb27569c35974b6c26e465e3d55e19c03d108'
-            '93be4523fb8c3dd6b56eddfe0b09e666725a62eb43392fee336ba1a328f9ffdd'
-            '558919a5e4632512fa42690bd5ea96e72766213ae6943408f7010daa486de929'
-            'c242202f3526d5eaa21d321a1d0fa472697c50e8288175ebe93212356c78d1f1'
-            '7cec4688b83df9f8ab56f5ab5e162383fe8928ff88b76d753a2cea935f30ec93'
-            'b84310fd8fb9a98258c55ed9628226b14f55d6e42304df4d2a5bd8d8445c03b3'
-            'd6b6accddc890aff38b5ded3300e9dde35e1d7ed3f767e1655772e2cc7871739'
-            '8346a5799be41bd3524fa6fdc57b6175d9d6a00b366f99bd5cd7fa3d43d0ae98'
-            '7f60108a372718cfec5d883167a33983be7c5df33fc48bfc21f664449ac7a0a4'
-            '43eb9548ddff92fb08c0c7636c4978541ff225e220bf4ba6512118cf75e76b07')
+            '3687b6ed122d607fc549c0ec2fc29b61e7da246fd42443680e442e8526a18ab2'
+            '6dd930f5da349959deb128b0fa875da11184df90afe250a51862b39beffd1240'
+            '4986792235e02c62316d974e47059bcf1223c4a2d86efa1eb56d8ef6993988ad'
+            'd35854bf5a14984ddb57a36be6f4e9ac62748fa2bf10c8f844a8eb17402e8839'
+            '2bbeae9c91cd42f92956967b97b777e7f9bd2e2b9c160c767fc604b183571656'
+            '9cf5b82e00eb6ad3b79d4e7fc7a9cc824e5748bd0fd26a5a06478f2e9ca6f3e8'
+            'c5f2430aaff70e9aaf37fe54cbc2a557004f2ef74283adc51c6b99e3c9ec4801'
+            '49e746cb0ee391be3ef6d60de589f61cf25bcbfa16a49fd113a2445e5c559a9a'
+            '3ac53499f19e95bdb84ab9dad8a1c551b4bb75f940b8e09ae4cd4bdea2a48999'
+            '5215e5a10d6e1d7b0850683f3d27114a31143ac3112103a59a1094e5702954ca'
+            '6f865181a93c499b21e7d31d8a423cecc9b8b6c205dbb8c9bb460ac5a86f7725'
+            'b880a0d9e07b4a6198b3a2b318611dd53419978e60bf397ba9910c4358656de7'
+            'd81b84c2a4e4a03dca169ec8b05f967bd8f5c3f3b7bc2895c0a9cbd0fa719d4b'
+            '1de924b4bf41e0603fac3b3a2b83db18211ae9e65e15ac0dbaf5448c587dfb76'
+            '8d9a5dd13df1f18e94abe8520dfc1f1f80ac45677e93ff64b4c3a8f5adbc9fa1'
+            'e3aef7b31ff56d128ac8b213437987c57a1490f52b31185199241da43233547d'
+            'bc16b167293aca73eec011d42b6d69a88e7a51be778e56e4d9a0ab1bc421efaa'
+            '8388d3c5edfe66f5f023fe5df275e7223cc5d92f9163a8a85a99987f538b30f0'
+            '94f1f32544311713ec4f76a1058625d4215e0a7582ca3f08208841c0bf4ed723')
+
+apply_git_am_with_msg() {
+  for _patch in "$@"
+  do
+    msg2 "Applying $_patch"
+    git am --committer-date-is-author-date "${srcdir}/${_patch}"
+  done
+}
 
 prepare() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/0000-pacman-msysize.patch
-  patch -p1 -i ${srcdir}/0001-more-debugging-info.patch
-  patch -p1 -i ${srcdir}/0002-pacman-core-update.patch
-  patch -p1 -i ${srcdir}/0003-remove-ldconfig.patch
-  patch -p1 -i ${srcdir}/0004-change-epoch-sep.patch
-  patch -p1 -i ${srcdir}/0006-makepkg-avoid-creating-.tar-files-with-extended-attr.patch
-  patch -p1 -i ${srcdir}/0007-exe-interp-ignore-file-conflict.patch
-  patch -p1 -i ${srcdir}/0008-answer-yes-by-default.patch
-  patch -p1 -i ${srcdir}/0009-msys-use-pipe-instead-socket.patch
-  patch -p1 -i ${srcdir}/0010-filelist-strcasecmp.patch
-  patch -p1 -i ${srcdir}/0011-update-ja-po-for-msys2.patch
-  patch -p1 -i ${srcdir}/0012-workaround-bsdtar-AD-account.patch
-  patch -p1 -i ${srcdir}/0013-use-libintl.patch
-  patch -p1 -i ${srcdir}/0014-fix-asciidoc-argparse.patch
-  patch -p1 -i ${srcdir}/0016-excise-fakeroot.patch
-  patch -p1 -i ${srcdir}/0017-excise-sudo.patch
-  patch -p1 -i ${srcdir}/0018-use-msys-tools.patch
-  patch -p1 -i ${srcdir}/0019-doxyfile-in-missing.patch
+
+  # fixup symlinks
+  git config core.symlinks true
+  git reset HEAD --hard
+
+  # https://bugs.archlinux.org/task/71274#comment200612
+  patch -Np1 -i "${srcdir}/fix-sig-download-name.patch"
+
+ apply_git_am_with_msg 0001-Msysize.patch \
+  0002-More-debugging-info.patch \
+  0003-Core-update.patch \
+  0004-Remove-ldconfig.patch \
+  0005-Change-the-epoch-separator.patch \
+  0006-makepkg-avoid-creating-.tar-files-with-extended-attr.patch \
+  0007-pacman-libalpm-ignore-file-conflicts-for-foo.exe-foo.patch \
+  0008-Change-default-answer-of-all-queries-to-yes.patch \
+  0009-Use-pipe-instead-of-socket.patch \
+  0010-pacman-make-file-list-comparisons-between-packages-c.patch \
+  0011-Translate-MSYS2-specific-messages-into-Japanese.patch \
+  0012-Workaround-compressing-packages-with-bsdtar-under-Ac.patch \
+  0013-Fix-asciidoc-argparse.patch \
+  0014-Remove-fakeroot.patch \
+  0015-Remove-sudo.patch \
+  0016-Use-msys-tools.patch \
+  0017-Export-CC-and-CXX-variables-explicitly.patch \
+  0018-Add-a-CI-job.patch
 }
 
 build() {
